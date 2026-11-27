@@ -82,7 +82,7 @@ const products = [
   {
     slug: 'long-kinky-curl-wig',
     name: 'Long Kinky Curl Wig',
-    price: 'Price on request',
+    price: '₦280,000',
     category: 'curly',
     texture: 'Long, defined curls',
     image: '/images/products/long-kinky-curl.webp',
@@ -91,7 +91,7 @@ const products = [
   {
     slug: 'honey-blonde-straight-wig',
     name: 'Honey Blonde Straight Wig',
-    price: 'Price on request',
+    price: '₦340,000',
     category: 'straight',
     texture: 'Long and straight',
     image: '/images/products/honey-blonde-straight.webp',
@@ -100,7 +100,7 @@ const products = [
   {
     slug: 'blonde-wave-wig',
     name: 'Blonde Wave Wig',
-    price: 'Price on request',
+    price: '₦320,000',
     category: 'wavy',
     texture: 'Soft body wave',
     image: '/images/products/blonde-wave.webp',
@@ -109,7 +109,7 @@ const products = [
   {
     slug: 'body-wave-bundle',
     name: 'Body Wave Bundle',
-    price: 'Price on request',
+    price: '₦95,000',
     category: 'bundles',
     texture: 'Loose body wave',
     image: '/images/products/body-wave-bundle.webp',
@@ -118,7 +118,7 @@ const products = [
   {
     slug: 'natural-afro-curl-wig',
     name: 'Natural Afro Curl Wig',
-    price: 'Price on request',
+    price: '₦280,000',
     category: 'curly',
     texture: 'Full afro curls',
     image: '/images/products/afro-curl.webp',
@@ -127,7 +127,7 @@ const products = [
   {
     slug: 'burgundy-wave-wig',
     name: 'Burgundy Wave Wig',
-    price: 'Price on request',
+    price: '₦330,000',
     category: 'wavy',
     texture: 'Long burgundy waves',
     image: '/images/products/burgundy-wave.webp',
@@ -136,7 +136,7 @@ const products = [
   {
     slug: 'bronde-wave-wig',
     name: 'Bronde Wave Wig',
-    price: 'Price on request',
+    price: '₦330,000',
     category: 'wavy',
     texture: 'Layered brown and blonde waves',
     image: '/images/products/bronde-wave.webp',
@@ -145,7 +145,7 @@ const products = [
   {
     slug: 'blonde-bob-wig',
     name: 'Blonde Bob Wig',
-    price: 'Price on request',
+    price: '₦290,000',
     category: 'wavy',
     texture: 'Short, layered waves',
     image: '/images/products/blonde-bob.webp',
@@ -154,7 +154,7 @@ const products = [
   {
     slug: 'dark-layered-bob-wig',
     name: 'Dark Layered Bob Wig',
-    price: 'Price on request',
+    price: '₦280,000',
     category: 'wavy',
     texture: 'Short layered waves',
     image: '/images/products/dark-layered-bob.webp',
@@ -163,7 +163,7 @@ const products = [
   {
     slug: 'honey-highlight-wave-wig',
     name: 'Honey Highlight Wave Wig',
-    price: 'Price on request',
+    price: '₦350,000',
     category: 'wavy',
     texture: 'Honey blonde highlighted waves',
     image: '/images/products/honey-highlight-wave.webp',
@@ -172,7 +172,7 @@ const products = [
   {
     slug: 'long-highlight-wave-wig',
     name: 'Long Highlight Wave Wig',
-    price: 'Price on request',
+    price: '₦370,000',
     category: 'wavy',
     texture: 'Long highlighted waves',
     image: '/images/products/long-highlight-wave.webp',
@@ -325,10 +325,7 @@ function HairCare() {
 }
 
 function ProductCard({ product, index }) {
-  const needsQuote = product.price === 'Price on request';
-  const orderMessage = needsQuote
-    ? `Hi Yummybaehair, is the ${product.name} currently available? Please share the price and options.`
-    : `Hi Yummybaehair, I'd like to order the ${product.name} (${product.price})`;
+  const orderMessage = `Hi Yummybaehair, I'd like to order the ${product.name}. I saw the sample price is ${product.price}; please confirm the current price, available options, and availability.`;
 
   return <article className="product-card">
     <a className="product-photo-link" href={appHref(`/products/${product.slug}`)} aria-label={`View ${product.name} details`}>
@@ -336,7 +333,7 @@ function ProductCard({ product, index }) {
       <span className="product-order">View details <Icon name="arrow-up-right" size={14} /></span>
     </a>
     <div className="product-meta"><h3>{product.name}</h3><span>{product.price}</span></div>
-    <a className="product-cta" href={whatsapp(orderMessage)}>{needsQuote ? 'Ask about availability' : 'Order on WhatsApp'} <Icon name="arrow-up-right" /></a>
+    <a className="product-cta" href={whatsapp(orderMessage)}>Order on WhatsApp <Icon name="arrow-up-right" /></a>
   </article>;
 }
 
@@ -351,6 +348,7 @@ function BestSellers({ eyebrow = 'A few baes’ favourites', title = <>Best <em>
         <span className="eyebrow">{eyebrow}</span>
         <h2 className="section-title">{title}</h2>
       </div>
+      <p className="price-preview-note">Sample prices for preview only. Confirm the current price, options, and availability on WhatsApp.</p>
       <ProductGrid items={products.slice(0, 6)} />
       <div className="center-action"><a className="button button-outline" href={appHref('/shop')}>Explore the full collection <Icon name="arrow-up-right" /></a></div>
     </div>
@@ -380,6 +378,7 @@ function ProductCatalog() {
         <a className={!activeCategory ? 'is-active' : ''} href={appHref('/shop')} aria-current={!activeCategory ? 'page' : undefined}>All styles</a>
         {categories.map((category) => <a className={activeCategory?.slug === category.slug ? 'is-active' : ''} href={appHref(`/shop?category=${category.slug}`)} aria-current={activeCategory?.slug === category.slug ? 'page' : undefined} key={category.slug}>{category.name}</a>)}
       </nav>
+      <p className="price-preview-note">Sample prices for preview only. Confirm the current price, options, and availability on WhatsApp.</p>
       <p className="catalog-count" aria-live="polite">{matching.length} {matching.length === 1 ? 'style' : 'styles'}</p>
       {matching.length ? <ProductGrid items={matching} /> : <div className="catalog-empty"><p>No styles match “{query}”.</p><button className="text-button" onClick={() => setQuery('')}>Clear search</button></div>}
     </div>
@@ -629,7 +628,7 @@ function CustomerInfoPage({ page }) {
 }
 
 function ProductDetail({ product }) {
-  const message = `Hi Yummybaehair, I'm interested in the ${product.name}. Please confirm the current price, available options, and availability.`;
+  const message = `Hi Yummybaehair, I'm interested in the ${product.name}. I saw the sample price is ${product.price}; please confirm the current price, available options, and availability.`;
   const photoUrl = product.image;
   const specs = [
     ['Texture', product.texture],
@@ -647,6 +646,7 @@ function ProductDetail({ product }) {
         <span className="eyebrow">Yummybaehair collection</span>
         <h2>{product.name}</h2>
         <strong className="detail-price">{product.price}</strong>
+        <p className="price-preview-note">Sample price for preview only; please confirm the current price with us.</p>
         <p>Contact us to confirm the exact product options, current availability, and delivery details before ordering.</p>
         <dl className="product-specs">{specs.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
         <div className="detail-order-actions">
