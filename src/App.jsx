@@ -171,10 +171,28 @@ const marqueeItems = [
   'Unprocessed. Unmatched.',
 ];
 
+const photoTones = {
+  'afro-curl.webp': 'earth',
+  'blonde-bob.webp': 'blush',
+  'blonde-wave.webp': 'champagne',
+  'body-wave-bundle.webp': 'stone',
+  'bronde-wave.webp': 'sage',
+  'burgundy-wave.webp': 'berry',
+  'dark-layered-bob-alt.webp': 'blush',
+  'dark-layered-bob.webp': 'blush',
+  'honey-blonde-straight.webp': 'rose',
+  'honey-highlight-wave.webp': 'rose',
+  'long-highlight-wave.webp': 'rose',
+  'long-kinky-curl.webp': 'earth',
+  'styling-reference.webp': 'blush',
+};
+
 function Photo({ src, alt, className = '', position = 'center 30%', fit = 'contain', loading = 'lazy' }) {
   const [failed, setFailed] = useState(false);
+  const filename = src.split(/[?#]/, 1)[0].split('/').pop();
+  const tone = photoTones[filename] || 'neutral';
   return (
-    <div className={`photo ${className}${failed ? ' photo-failed' : ''}`}>
+    <div className={`photo photo-tone-${tone} ${className}${failed ? ' photo-failed' : ''}`}>
       {failed ? <div className="photo-fallback" role="img" aria-label={alt}>
         <svg viewBox="0 0 200 260" aria-hidden="true">
           <path d="M100 8C45 8 22 55 30 120c4 40-6 90-14 132h168c-8-42-18-92-14-132C178 55 155 8 100 8Z" fill="currentColor" />
