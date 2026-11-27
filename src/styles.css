@@ -41,6 +41,7 @@ main { overflow: clip; }
 .main-nav a[aria-current="page"]::after { transform: scaleX(1); }
 .button { min-height: 46px; padding: 0 21px; display: inline-flex; align-items: center; justify-content: center; gap: 13px; border: 1px solid var(--ink); color: var(--ink); background: transparent; font-size: 11px; font-weight: 700; letter-spacing: .035em; line-height: 1.2; transition: background .2s, color .2s, border-color .2s, transform .2s; cursor: pointer; }
 .button:hover { transform: translateY(-2px); }
+.button:disabled { opacity: .7; cursor: wait; transform: none; }
 .button-fill { border-color: var(--rose-dark); background: var(--rose-dark); color: var(--cream); }
 .button-fill:hover { border-color: var(--rose); background: var(--rose); color: var(--ink); }
 .button-order { min-width: 104px; min-height: 42px; }
