@@ -627,94 +627,9 @@ function CustomerInfoPage({ page }) {
   </>;
 }
 
-function ProductPhotoShareButton({ product, message }) {
-  const [photoFile, setPhotoFile] = useState(null);
-  const [photoStatus, setPhotoStatus] = useState('loading');
-
-  useEffect(() => {
-    let active = true;
-
-    async function preparePhoto() {
-      try {
-        const image = new Image();
-        image.src = assetHref(product.image);
-        await image.decode();
-
-        const padding = 96;
-        const scale = Math.min(
-          1,
-          (1280 - padding * 2) / image.naturalWidth,
-          (1480 - padding * 2) / image.naturalHeight,
-        );
-        const drawWidth = Math.round(image.naturalWidth * scale);
-        const drawHeight = Math.round(image.naturalHeight * scale);
-        const canvas = document.createElement('canvas');
-        canvas.width = drawWidth + padding * 2;
-        canvas.height = drawHeight + padding * 2;
-        const context = canvas.getContext('2d');
-        if (!context) throw new Error('Canvas is not available');
-
-        const background = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-        background.addColorStop(0, '#fffaf2');
-        background.addColorStop(1, '#efdeda');
-        context.fillStyle = background;
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.shadowColor = 'rgb(48 43 39 / 15%)';
-        context.shadowBlur = 28;
-        context.shadowOffsetY = 12;
-        context.drawImage(image, padding, padding, drawWidth, drawHeight);
-
-        const blob = await new Promise((resolve, reject) => canvas.toBlob(
-          (result) => result ? resolve(result) : reject(new Error('Could not prepare product image')),
-          'image/jpeg',
-          0.92,
-        ));
-        const file = new File([blob], `${product.slug}.jpg`, { type: 'image/jpeg' });
-        if (active) {
-          setPhotoFile(file);
-          setPhotoStatus('ready');
-        }
-      } catch {
-        if (active) setPhotoStatus('fallback');
-      }
-    }
-
-    preparePhoto();
-    return () => { active = false; };
-  }, [product.image, product.slug]);
-
-  const handleAsk = async () => {
-    const photoUrl = `${window.location.origin}${assetHref(product.image)}`;
-    const fallbackToWhatsApp = () => {
-      window.location.href = whatsapp(`${message}\nProduct photo: ${photoUrl}`);
-    };
-
-    let canSharePhoto = false;
-    try {
-      canSharePhoto = Boolean(photoFile && navigator.share && navigator.canShare?.({ files: [photoFile] }));
-    } catch {
-      canSharePhoto = false;
-    }
-    if (!canSharePhoto) {
-      fallbackToWhatsApp();
-      return;
-    }
-
-    try {
-      await navigator.share({ title: product.name, text: message, files: [photoFile] });
-    } catch (error) {
-      if (error.name !== 'AbortError') fallbackToWhatsApp();
-    }
-  };
-
-  return <button className="button button-fill" type="button" onClick={handleAsk} disabled={photoStatus === 'loading'} aria-busy={photoStatus === 'loading'}>
-    Ask about this product <Icon name="arrow-up-right" />
-  </button>;
-}
-
 function ProductDetail({ product }) {
-  const message = `Hi Yummybaehair, I'm interested in the ${product.name}. I saw the sample price is ${product.price}; please confirm the current price, available options, and availability.`;
-  const photoUrl = product.image;
+  const photoUrl = `${window.location.origin}${assetHref(product.image)}`;
+  const message = `Hi Yummybaehair, I'm interested in the ${product.name}. I saw the sample price is ${product.price}; please confirm the current price, available options, and availability. Product photo: ${photoUrl}`;
   const specs = [
     ['Texture', product.texture],
     ['Length', 'Ask us for current options'],
@@ -735,7 +650,7 @@ function ProductDetail({ product }) {
         <p>Contact us to confirm the exact product options, current availability, and delivery details before ordering.</p>
         <dl className="product-specs">{specs.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
         <div className="detail-order-actions">
-          <ProductPhotoShareButton product={product} message={message} />
+          <a className="button button-fill" href={whatsapp(message)}>Ask about this product <Icon name="arrow-up-right" /></a>
         </div>
         <a className="detail-back" href={appHref(`/shop?category=${product.category}`)}><Icon name="arrow-left" size={14} /> Back to {categories.find((category) => category.slug === product.category)?.name.toLowerCase() || 'the shop'}</a>
       </div>
