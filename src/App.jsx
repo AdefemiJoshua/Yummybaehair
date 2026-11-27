@@ -16,6 +16,22 @@ function currentRoute() {
   return appPath.replace(/\/$/, '') || '/';
 }
 
+function Icon({ name, size = 16, className = '' }) {
+  const paths = {
+    'arrow-up-right': <><path d="M7 17 17 7" /><path d="M8 7h9v9" /></>,
+    'arrow-right': <><path d="M4 12h15" /><path d="m13 5 7 7-7 7" /></>,
+    'arrow-left': <><path d="M20 12H5" /><path d="m11 6-6 6 6 6" /></>,
+    sparkle: <><path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Z" /><path d="m19 15 .8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z" /></>,
+    check: <path d="m5 12 4.5 4.5L19 7" />,
+    smile: <><circle cx="12" cy="12" r="9" /><path d="M8 14s1.4 2 4 2 4-2 4-2" /><path d="M9 9h.01M15 9h.01" /></>,
+    refresh: <><path d="M20 7v5h-5" /><path d="M20 12a8 8 0 0 0-14.8-4M4 17v-5h5" /><path d="M4 12a8 8 0 0 0 14.8 4" /></>,
+    truck: <><path d="M3 6h11v11H3z" /><path d="M14 10h4l3 3v4h-7z" /><circle cx="7.5" cy="18" r="1.5" /><circle cx="17.5" cy="18" r="1.5" /></>,
+    search: <><circle cx="10.8" cy="10.8" r="6.8" /><path d="m16 16 4.2 4.2" /></>,
+    star: <path d="m12 2.8 2.8 5.7 6.3.9-4.6 4.5 1.1 6.3-5.6-3-5.6 3 1.1-6.3-4.6-4.5 6.3-.9L12 2.8Z" />,
+  };
+  return <svg className={`icon icon-${name}${className ? ` ${className}` : ''}`} width={size} height={size} viewBox="0 0 24 24" fill={name === 'star' ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={name === 'truck' ? 1.6 : 1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>;
+}
+
 const WHATSAPP_NUMBER = '2348168162899';
 const whatsapp = (message) => {
   const base = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER}` : 'https://wa.me/';
@@ -233,7 +249,7 @@ function Header() {
         <nav className={menuOpen ? 'main-nav is-open' : 'main-nav'} aria-label="Main navigation">
           {links.map(([label, path]) => <a href={appHref(path)} key={label} aria-current={currentPath === path ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
-        <a className="button button-order" href={whatsapp("Hi Yummybaehair, I'd like to place an order")}>Order <span aria-hidden="true">↗</span></a>
+        <a className="button button-order" href={whatsapp("Hi Yummybaehair, I'd like to place an order")}>Order <Icon name="arrow-up-right" /></a>
       </div>
     </header>
   </>;
@@ -243,7 +259,7 @@ function Marquee() {
   const items = [...marqueeItems, ...marqueeItems];
   return <div className="marquee" aria-label={marqueeItems.join('. ')}>
     <div className="marquee-track" aria-hidden="true">
-      {items.map((item, index) => <span key={`${item}-${index}`}>{item}<b>✳</b></span>)}
+      {items.map((item, index) => <span key={`${item}-${index}`}>{item}<b><Icon name="sparkle" size={13} /></b></span>)}
     </div>
   </div>;
 }
@@ -255,7 +271,7 @@ function Hero() {
         <span className="eyebrow">Discover your perfect look</span>
         <h1>Enhance your natural beauty with our <em>exquisite wigs.</em></h1>
         <p>Made to feel soft, look natural, and help you show up as your most confident self.</p>
-        <a className="button button-fill" href="#collection">Shop now <span aria-hidden="true">↗</span></a>
+        <a className="button button-fill" href="#collection">Shop now <Icon name="arrow-up-right" /></a>
       </div>
       <Photo className="hero-photo" src="/images/products/blonde-wave.webp" alt="Long blonde body wave wig displayed on a mannequin" loading="eager" />
       <span className="hero-note">GOOD HAIR. GOOD ENERGY.</span>
@@ -277,17 +293,17 @@ function Collection() {
           <div className="tile-gallery" aria-hidden="true">
             {category.gallery.map((photo) => <Photo key={photo.image} src={photo.image} alt={photo.alt} className="tile-gallery-photo" />)}
           </div>
-          <div className="tile-copy"><span>01 / 0{index + 1}</span><h3>{category.name}</h3><b>Explore <span aria-hidden="true">↗</span></b></div>
+          <div className="tile-copy"><span>01 / 0{index + 1}</span><h3>{category.name}</h3><b>Explore <Icon name="arrow-up-right" size={14} /></b></div>
         </a>)}
       </div>
       <div className="features">
         {[
-          ['✓', 'Original product', 'Premium quality, carefully selected.'],
-          ['☺', 'Satisfaction assured', 'Made for comfort, quality, and confidence.'],
-          ['↻', 'Fresh arrivals', 'New styles for your next favourite look.'],
-          ['➜', 'Reliable delivery', 'Thoughtfully packed and sent to your door.'],
+          ['check', 'Original product', 'Premium quality, carefully selected.'],
+          ['smile', 'Satisfaction assured', 'Made for comfort, quality, and confidence.'],
+          ['refresh', 'Fresh arrivals', 'New styles for your next favourite look.'],
+          ['truck', 'Reliable delivery', 'Thoughtfully packed and sent to your door.'],
         ].map(([icon, title, description]) => <article className="feature" key={title}>
-          <span className="feature-icon" aria-hidden="true">{icon}</span>
+          <span className="feature-icon"><Icon name={icon} size={18} /></span>
           <h3>{title}</h3>
           <p>{description}</p>
         </article>)}
@@ -303,7 +319,7 @@ function HairCare() {
       <span className="eyebrow">Keep your crown feeling its best</span>
       <h2>Hair care, with a little <em>extra love.</em></h2>
       <p>From washing and conditioning to storage, our care range helps your wig stay soft, shiny, and tangle-free for longer.</p>
-      <a className="button button-fill" href={whatsapp("Hi Yummybaehair, I'd like to see your hair care products")}>Explore hair care <span aria-hidden="true">↗</span></a>
+      <a className="button button-fill" href={whatsapp("Hi Yummybaehair, I'd like to see your hair care products")}>Explore hair care <Icon name="arrow-up-right" /></a>
     </div>
   </section>;
 }
@@ -317,10 +333,10 @@ function ProductCard({ product, index }) {
   return <article className="product-card">
     <a className="product-photo-link" href={appHref(`/products/${product.slug}`)} aria-label={`View ${product.name} details`}>
       <Photo src={product.image} alt={product.alt} className={`product-photo product-photo-${index + 1}`} />
-      <span className="product-order">View details ↗</span>
+      <span className="product-order">View details <Icon name="arrow-up-right" size={14} /></span>
     </a>
     <div className="product-meta"><h3>{product.name}</h3><span>{product.price}</span></div>
-    <a className="product-cta" href={whatsapp(orderMessage)}>{needsQuote ? 'Ask about availability' : 'Order on WhatsApp'} <span aria-hidden="true">↗</span></a>
+    <a className="product-cta" href={whatsapp(orderMessage)}>{needsQuote ? 'Ask about availability' : 'Order on WhatsApp'} <Icon name="arrow-up-right" /></a>
   </article>;
 }
 
@@ -336,7 +352,7 @@ function BestSellers({ eyebrow = 'A few baes’ favourites', title = <>Best <em>
         <h2 className="section-title">{title}</h2>
       </div>
       <ProductGrid items={products.slice(0, 6)} />
-      <div className="center-action"><a className="button button-outline" href={appHref('/shop')}>Explore the full collection <span aria-hidden="true">↗</span></a></div>
+      <div className="center-action"><a className="button button-outline" href={appHref('/shop')}>Explore the full collection <Icon name="arrow-up-right" /></a></div>
     </div>
   </section>;
 }
@@ -358,7 +374,7 @@ function ProductCatalog() {
         <h2 className="section-title">{activeCategory ? <>{activeCategory.name} <em>collection</em></> : <>Shop <em>all styles</em></>}</h2>
       </div>
       <div className="catalog-controls">
-        <label className="catalog-search"><span className="sr-only">Search products</span><span aria-hidden="true">⌕</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search styles" /></label>
+        <label className="catalog-search"><span className="sr-only">Search products</span><Icon name="search" size={20} /><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search styles" /></label>
       </div>
       <nav className="catalog-categories" aria-label="Filter products by category">
         <a className={!activeCategory ? 'is-active' : ''} href={appHref('/shop')} aria-current={!activeCategory ? 'page' : undefined}>All styles</a>
@@ -376,7 +392,7 @@ function PureHair() {
       <span className="eyebrow">Feel the difference</span>
       <h2>PURE HAIR</h2>
       <p>Soft, natural, and made to be worn your way.</p>
-      <a className="button button-fill" href="#best-sellers">Find your look <span aria-hidden="true">↗</span></a>
+      <a className="button button-fill" href="#best-sellers">Find your look <Icon name="arrow-up-right" /></a>
       <span className="pure-mark" aria-hidden="true">YB</span>
     </div>
   </section>;
@@ -402,7 +418,7 @@ function Reviews() {
       <div className="review-grid">
         {reviews.map((review) => <article className="review" key={review.name}>
           <span className="review-avatar" aria-hidden="true">{review.name.charAt(0)}</span>
-          <div className="review-copy"><span className="review-stars" aria-label="5 out of 5 stars">★★★★★</span><p>“{review.quote}”</p><b>{review.name}</b><span className="review-customer">Yummybaehair customer</span></div>
+          <div className="review-copy"><span className="review-stars" aria-label="5 out of 5 stars">{Array.from({ length: 5 }, (_, index) => <Icon key={index} name="star" size={12} />)}</span><p>“{review.quote}”</p><b>{review.name}</b><span className="review-customer">Yummybaehair customer</span></div>
         </article>)}
       </div>
     </div>
@@ -423,7 +439,7 @@ function Booking() {
   return <section className="booking" id="book">
     <Photo src="/images/products/blonde-bob.webp" alt="Blonde layered bob wig displayed on a mannequin" className="booking-photo" />
     <div className="booking-panel">
-      {sent ? <div className="booking-success" role="status"><span>✳</span><h2>Thank you, <em>bae.</em></h2><p>Your WhatsApp message is ready. Our team will help you find your perfect look.</p></div> : <form className="booking-form" onSubmit={submit}>
+      {sent ? <div className="booking-success" role="status"><span><Icon name="sparkle" size={25} /></span><h2>Thank you, <em>bae.</em></h2><p>Your WhatsApp message is ready. Our team will help you find your perfect look.</p></div> : <form className="booking-form" onSubmit={submit}>
         <span className="eyebrow">A little one-on-one care</span>
         <h2>Book a <em>consultation</em></h2>
         <p>Tell us what you’re looking for and we’ll help you make it yours.</p>
@@ -437,7 +453,7 @@ function Booking() {
           <div><label htmlFor="booking-phone">Phone number</label><input id="booking-phone" name="phone" type="tel" autoComplete="tel" placeholder="Your number" required /></div>
           <div><label htmlFor="booking-date">Preferred date</label><input id="booking-date" name="date" type="date" required /></div>
         </div>
-        <button className="button button-fill" type="submit">Continue on WhatsApp <span aria-hidden="true">↗</span></button>
+        <button className="button button-fill" type="submit">Continue on WhatsApp <Icon name="arrow-up-right" /></button>
       </form>}
     </div>
   </section>;
@@ -448,11 +464,11 @@ function Footer() {
   return <footer className="site-footer">
     <div className="wrap">
       <div className="footer-columns">
-        <div className="footer-about"><Logo footer /><p>Premium wigs, bundles, frontals, and clip-ins. Made for your crown.</p><a href={whatsapp('Hi Yummybaehair, I have a question')}>Chat with us ↗</a></div>
+        <div className="footer-about"><Logo footer /><p>Premium wigs, bundles, frontals, and clip-ins. Made for your crown.</p><a href={whatsapp('Hi Yummybaehair, I have a question')}>Chat with us <Icon name="arrow-up-right" size={14} /></a></div>
         <div><h3>Explore</h3><a href={appHref('/shop')}>Shop</a><a href={appHref('/collection')}>Collection</a><a href={appHref('/hair-care')}>Hair care</a><a href={appHref('/reviews')}>Reviews</a></div>
         <div><h3>Need a hand?</h3><a href={appHref('/consultation')}>Book a consultation</a><a href={appHref('/shipping')}>Shipping</a><a href={appHref('/payment')}>Payment</a><a href={appHref('/returns')}>Returns</a><a href={appHref('/faq')}>FAQs</a><a href={appHref('/privacy')}>Privacy policy</a></div>
         <div className="footer-newsletter"><h3>Get the good stuff</h3><p>New looks and a little love in your inbox.</p>
-          {subscribed ? <span className="newsletter-success" role="status">This preview doesn’t save emails yet. Message us on WhatsApp for new-drop updates.</span> : <form onSubmit={(event) => { event.preventDefault(); setSubscribed(true); }}><label className="sr-only" htmlFor="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="Your email" autoComplete="email" required /><button type="submit" aria-label="Join the newsletter">↗</button></form>}
+          {subscribed ? <span className="newsletter-success" role="status">This preview doesn’t save emails yet. Message us on WhatsApp for new-drop updates.</span> : <form onSubmit={(event) => { event.preventDefault(); setSubscribed(true); }}><label className="sr-only" htmlFor="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="Your email" autoComplete="email" required /><button type="submit" aria-label="Join the newsletter"><Icon name="arrow-right" /></button></form>}
         </div>
       </div>
       <div className="footer-bottom"><span>© 2026 Yummybaehair. All rights reserved.</span><span>Made with love, for your crown.</span></div>
@@ -477,7 +493,7 @@ function HomePage() {
 function PageIntro({ eyebrow, title, description, backHref = '/', backLabel = 'Home' }) {
   return <section className="page-intro">
     <div className="wrap">
-      <a className="page-back" href={appHref(backHref)}><span aria-hidden="true">←</span> Back to {backLabel}</a>
+      <a className="page-back" href={appHref(backHref)}><Icon name="arrow-left" size={14} /> Back to {backLabel}</a>
       <span className="eyebrow">{eyebrow}</span>
       <h1>{title}</h1>
       <p>{description}</p>
@@ -512,7 +528,7 @@ function HairCarePage() {
         <article><span>03</span><h2>Condition the lengths</h2><p>Apply conditioner through the mid-lengths and ends, then rinse thoroughly. Follow the care instructions for your specific hair.</p></article>
         <article><span>04</span><h2>Dry before storing</h2><p>Gently blot away excess water, let the hair dry fully, and store it in a clean, protected place between wears.</p></article>
         <article><span>05</span><h2>Ask before heat styling</h2><p>Heat tolerance varies by product. Message us to confirm care and styling guidance for the exact item you choose.</p></article>
-        <article className="care-note-cta"><h2>Need product-specific advice?</h2><p>Tell us which style you have and we’ll help you find its care instructions.</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, please share care instructions for my hair')}>Ask us on WhatsApp <span aria-hidden="true">↗</span></a></article>
+        <article className="care-note-cta"><h2>Need product-specific advice?</h2><p>Tell us which style you have and we’ll help you find its care instructions.</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, please share care instructions for my hair')}>Ask us on WhatsApp <Icon name="arrow-up-right" /></a></article>
       </div>
     </section>
   </>;
@@ -522,7 +538,7 @@ function ReviewsPage() {
   return <>
     <PageIntro eyebrow="Kind words from the community" title={<>The baes have <em>spoken</em></>} description="A few notes from customers who found a look they love." />
     <Reviews />
-    <div className="review-cta"><a className="button button-fill" href={appHref('/shop')}>Find your look <span aria-hidden="true">↗</span></a></div>
+    <div className="review-cta"><a className="button button-fill" href={appHref('/shop')}>Find your look <Icon name="arrow-up-right" /></a></div>
   </>;
 }
 
@@ -530,8 +546,8 @@ function ContactPage() {
   return <>
     <PageIntro eyebrow="We’re here to help" title={<>Talk to your <em>hair bestie</em></>} description="Ask about a product, get help choosing a look, or book a consultation with Yummybaehair." />
     <section className="contact-options"><div className="wrap contact-options-grid">
-      <article><span className="eyebrow">WhatsApp</span><h2>Let’s chat.</h2><p>Message us about products, availability, delivery, or anything you’d like to know before ordering.</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, I have a question')}>Message +234 816 816 2899 <span aria-hidden="true">↗</span></a></article>
-      <article><span className="eyebrow">Personal guidance</span><h2>Book a consultation.</h2><p>Share your preferred style and a few details. We’ll follow up in WhatsApp to confirm next steps.</p><a className="button button-outline" href={appHref('/consultation')}>See consultation details <span aria-hidden="true">↗</span></a></article>
+      <article><span className="eyebrow">WhatsApp</span><h2>Let’s chat.</h2><p>Message us about products, availability, delivery, or anything you’d like to know before ordering.</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, I have a question')}>Message +234 816 816 2899 <Icon name="arrow-up-right" /></a></article>
+      <article><span className="eyebrow">Personal guidance</span><h2>Book a consultation.</h2><p>Share your preferred style and a few details. We’ll follow up in WhatsApp to confirm next steps.</p><a className="button button-outline" href={appHref('/consultation')}>See consultation details <Icon name="arrow-up-right" /></a></article>
     </div></section>
   </>;
 }
@@ -608,7 +624,7 @@ function CustomerInfoPage({ page }) {
     <PageIntro eyebrow={page.eyebrow} title={page.title} description={page.description} />
     <section className="info-sections"><div className="wrap info-sections-grid">
       {page.sections.map(([heading, body], index) => <article key={heading}><span>{String(index + 1).padStart(2, '0')}</span><div><h2>{heading}</h2><p>{body}</p></div></article>)}
-    </div><div className="wrap"><nav className="info-nav" aria-label="More customer information"><a href={appHref('/shipping')}>Shipping</a><a href={appHref('/payment')}>Payment</a><a href={appHref('/returns')}>Returns</a><a href={appHref('/faq')}>FAQs</a><a href={appHref('/privacy')}>Privacy</a></nav></div><div className="wrap info-help"><p>Need help with your order?</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, I have a question')}>Message Yummybaehair <span aria-hidden="true">↗</span></a></div></section>
+    </div><div className="wrap"><nav className="info-nav" aria-label="More customer information"><a href={appHref('/shipping')}>Shipping</a><a href={appHref('/payment')}>Payment</a><a href={appHref('/returns')}>Returns</a><a href={appHref('/faq')}>FAQs</a><a href={appHref('/privacy')}>Privacy</a></nav></div><div className="wrap info-help"><p>Need help with your order?</p><a className="button button-fill" href={whatsapp('Hi Yummybaehair, I have a question')}>Message Yummybaehair <Icon name="arrow-up-right" /></a></div></section>
   </>;
 }
 
@@ -634,9 +650,9 @@ function ProductDetail({ product }) {
         <p>Contact us to confirm the exact product options, current availability, and delivery details before ordering.</p>
         <dl className="product-specs">{specs.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
         <div className="detail-order-actions">
-          <a className="button button-fill" href={whatsapp(message)}>Ask about this product <span aria-hidden="true">↗</span></a>
+          <a className="button button-fill" href={whatsapp(message)}>Ask about this product <Icon name="arrow-up-right" /></a>
         </div>
-        <a className="detail-back" href={appHref(`/shop?category=${product.category}`)}>← Back to {categories.find((category) => category.slug === product.category)?.name.toLowerCase() || 'the shop'}</a>
+        <a className="detail-back" href={appHref(`/shop?category=${product.category}`)}><Icon name="arrow-left" size={14} /> Back to {categories.find((category) => category.slug === product.category)?.name.toLowerCase() || 'the shop'}</a>
       </div>
     </div></section>
   </>;
@@ -645,7 +661,7 @@ function ProductDetail({ product }) {
 function NotFoundPage() {
   return <>
     <PageIntro eyebrow="Oops, wrong turn" title={<>This page is having a <em>bad hair day.</em></>} description="The page you’re looking for isn’t here. Head back home and find your next look." />
-    <div className="not-found-action"><a className="button button-fill" href={appHref('/')}>Back to home <span aria-hidden="true">↗</span></a></div>
+    <div className="not-found-action"><a className="button button-fill" href={appHref('/')}>Back to home <Icon name="arrow-up-right" /></a></div>
   </>;
 }
 
